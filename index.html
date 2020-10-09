@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="js/script.js"></script>
+    <link rel="stylesheet" href="css/estilos.css">
+    <title>Tabla</title>
+</head>
+<body>
+    <div id="divForm">
+        <form action="" id="form">
+            <label for="nombre">Nombre:</label><br>
+            <input type="text" name="nombre" id="nombre"><br>
+            <label for="apellido">Apellido:</label><br>
+            <input type="text" name="apellido" id="apellido"><br>
+            <label for="fecha">Fecha:</label><br>
+            <input type="date" name="fecha" id="fecha"><br>
+            <label for="sexo">Sexo:</label><br>
+            <input type="radio" name="sexo" id="sexof">Female
+            <input type="radio" name="sexo" id="sexom">Male<br><br>
+
+            <div id="divBoton">
+                <button type="button" id="btn">Insertar</button>
+                <button type="button" id="btnEliminar">Eliminar</button>
+
+            </div>
+        </form>
+    </div>
+    <br>
+    <div id="divBtnMas">
+        <button id="btnMas">+</button>
+    </div>
+    <br>
+    <h2>Lista de Personas</h2>
+    <div id="divTabla">
+        <table id="tabla">
+            <thead id ="cabecera">
+            </thead>
+            <tbody id='tbody' ondblclick="levantarDatos(event)">
+            </tbody>
+        </table>
+    </div>
+    
+</body>
+</html>
