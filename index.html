@@ -8,39 +8,52 @@
     <title>Tabla</title>
 </head>
 <body>
-    <div id="divForm">
-        <form action="" id="form">
-            <label for="nombre">Nombre:</label><br>
-            <input type="text" name="nombre" id="nombre"><br>
-            <label for="apellido">Apellido:</label><br>
-            <input type="text" name="apellido" id="apellido"><br>
-            <label for="fecha">Fecha:</label><br>
-            <input type="date" name="fecha" id="fecha"><br>
-            <label for="sexo">Sexo:</label><br>
-            <input type="radio" name="sexo" id="sexof">Female
-            <input type="radio" name="sexo" id="sexom">Male<br><br>
+    <div id="contenedor">
+        <div id="contenedor_spinner">
+            <div id="spinner"></div>
+        </div>
+        <div id="divForm">
+            <form action="" id="form">
+               <!-- <label for="id">Id:</label><br>-->
+                <input type="text" name="id" id="id" readonly><br>
+                <label for="nombre">Nombre:</label><br>
+                <input type="text" name="nombre" id="nombre"><br>
+                <label for="cuatrimestre">Cuatrimestre:</label><br>
+            <!-- <input type="text" name="cuatrimestre" id="cuatrimestre"><br>
+                -->
+                <select name="cuatrimestre" id="cuatrimestre" disabled>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                </select><br>
+                <label for="fecha">Fecha Final:</label><br>
+                <input type="date" name="fecha" id="fecha"><br>
+                <label for="turno">Turno:</label><br>
+                <input type="radio" name="turno" id="turnom" value ='Mañana'checked>Mañana
+                <input type="radio" name="turno" id="turnon" value ='Noche'>Noche<br><br>
 
-            <div id="divBoton">
-                <button type="button" id="btn">Insertar</button>
-                <button type="button" id="btnEliminar">Eliminar</button>
-
-            </div>
-        </form>
+                <div id="divBoton">
+                <!-- <button type="button" id="btn">Insertar</button>-->
+                    <button type="button" id="btnEliminar">Eliminar</button>
+                    <button type="button" id="btnModificar">Modificar</button>
+                </div>
+            </form>
+        </div>
+        <br>
+        <div id="divBtnMas">
+            <button id="btnMas">+</button>
+        </div>
+        <br>
+        <h2>Lista de Personas</h2>
+        <div id="divTabla">
+            <table id="tabla">
+                <thead id ="cabecera">
+                </thead>
+                <tbody id='tbody'ondblclick ="levantarDatos(event)">
+                </tbody>
+            </table>
+        </div>
     </div>
-    <br>
-    <div id="divBtnMas">
-        <button id="btnMas">+</button>
-    </div>
-    <br>
-    <h2>Lista de Personas</h2>
-    <div id="divTabla">
-        <table id="tabla">
-            <thead id ="cabecera">
-            </thead>
-            <tbody id='tbody' ondblclick="levantarDatos(event)">
-            </tbody>
-        </table>
-    </div>
-    
 </body>
 </html>

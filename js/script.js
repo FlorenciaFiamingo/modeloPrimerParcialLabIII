@@ -1,35 +1,65 @@
 window.addEventListener("load",function(){
+   
     mostrarOcultarDiv();
     ajax();
-
-    var btn =document.getElementById("btn");
-    btn.addEventListener("click", enviarDatos);
     
-    var btn2 =document.getElementById("btnMas");
+    var btn2 = document.getElementById("btnMas");
     btn2.addEventListener("click", mostrarOcultarDiv);
+    btn2.addEventListener("click", resetForm);
 
-    var btn3 =document.getElementById("btnEliminar");
-    btn3.addEventListener("click", eliminarRegistro);
+    var btn3 = document.getElementById('btnEliminar');
+    btn3.addEventListener('click', eliminarRegistro);
 
+    var btn4 = document.getElementById('btnModificar');
+   /* btn4.addEventListener("click", function(event){
+        event.preventDefault()
+    });*/
+    btn4.addEventListener('click', modificarRegistro);
 
     cargarTabla();
 
 });
 
+var miEvento;
+
+
 function enviarDatos(){
     var dato = obtenerDatos();
-    insertarNuevoDato(dato);
-    ajaxEnviarJSON(dato);
+    ajaxEnviarJSON(dato,"http://localhost:3000/nueva");
     resetForm();
+    obtenerUltimoID();
+}
+
+function obtenerUltimoID(){
+    var tabla = document.getElementById('tbody');
+    //console.log(tabla.lastChild.firstChild.innerHTML);
+    var ultimoID = tabla.lastChild.firstChild;
+    if(ultimoID===null){
+        ultimoID=0;
+    }else{
+
+        ultimoID.innerHTML;
+    }
+    return ultimoID;
 }
 
 function obtenerDatos(){
     var dato = {};
+    dato["id"] = document.getElementById('id').value;
+    //obtenerUltimoID() + 1;
     dato["nombre"] = document.getElementById("nombre").value;
-    dato["apellido"] = document.getElementById("apellido").value;
+    dato["cuatrimestre"] = document.getElementById("cuatrimestre").value;
     dato["fecha"] = document.getElementById("fecha").value;
-    dato["telefono"] = document.getElementById("telefono").value;
-    
+    //dato["sexo"] = document.getElementByName("sexo").value;
+    var man = document.getElementById('turnom');
+    var noc = document.getElementById('turnon');
+
+    if(man.checked == true){
+        dato["turno"] = 'Mañana';
+    }else if(noc.checked == true){
+        dato["turno"] = 'Noche';
+    }
+
     return dato;
 }
 
@@ -40,7 +70,7 @@ function insertarNuevoDato(data){
 
     for (var i in data) {
             var celda = document.createElement('td');
-            celda.style.textAlign = 'center';
+            celda.style.textAlign = 'left';
             var dato = document.createTextNode(data[i]);
             celda.appendChild(dato);
             fila.appendChild(celda);
@@ -62,15 +92,15 @@ function cargarTabla(){
     th2.appendChild(txtTh2);
 
     var th3 = document.createElement('th');
-    var txtTh3 = document.createTextNode('Apellido');
+    var txtTh3 = document.createTextNode('Cuatrimestre');
     th3.appendChild(txtTh3);
 
     var th4 = document.createElement('th');
-    var txtTh4 = document.createTextNode('Fecha');
+    var txtTh4 = document.createTextNode('Fecha Final');
     th4.appendChild(txtTh4);
 
     var th5 = document.createElement('th');
-    var txtTh5 = document.createTextNode('Sexo');
+    var txtTh5 = document.createTextNode('Turno');
     th5.appendChild(txtTh5);
 
     thead.appendChild(th1);
@@ -78,7 +108,6 @@ function cargarTabla(){
     thead.appendChild(th3);
     thead.appendChild(th4);
     thead.appendChild(th5);
-
 
 }
 
@@ -96,36 +125,82 @@ function cargarTablaJSON(data){
         table.appendChild(fila);
     }
 
+    var id = obtenerUltimoID();
+    console.log(id);
 }
 
 function resetForm(){
-    document.getElementById("apellido").value = "";
+    
+    document.getElementById("cuatrimestre").value = "";
     document.getElementById("nombre").value = "";
     document.getElementById("fecha").value = "";
-    document.getElementById("sexo").value = "";
+    document.getElementById("id").value = "";
+    document.getElementsByTagName('sexo').value = '';
 }
 
-function onDelete(td){
-    if(confirm("Está seguro que desea eliminar el registro?")){
+function eliminarRegistro(){
+
+    var dato = obtenerDatos();
+    var fila = miEvento.parentNode; 
+    console.log(fila);
+    var tabla = document.getElementById('tbody');
+    ajaxEnviarJSON(dato,"http://localhost:3000/eliminar"); 
+    tabla.removeChild(fila);
+    resetForm();
+    setTimeout(location.reload(), 3000);
+}
+
+function modificarRegistro(){
     
-        var row = td.parentElement.parentElement;
-        document.getElementById("tabla").deleteRow(row.rowIndex);
+    cambiarInputs();
+    
+    if(validarDatos()=== true){
+        var datos = obtenerDatos();
+        ajaxEnviarJSON(datos,"http://localhost:3000/editar");
         resetForm();
     }
 }
 
-function eliminarRegistro(event){
+function cambiarInputs(){
+    var nombre = document.getElementById('nombre');
+    nombre.style.borderColor = 'black';
+}
 
-    var fila = event.target.parentNode.parentNode;
-    var tabla = document.getElementById('tbody');
-    tabla.removeChild(fila);
-    resetForm();
+function validarDatos(){
+    
+    var dato = obtenerDatos();
+   
+    var min = 6
+    var nombre = document.getElementById('nombre');
+    var nombreString = new String(dato.nombre);
+    
+    var retorno;
+
+    if(nombreString.length > 0 && nombreString.length < min){
+        nombre.style.borderColor = 'red';
+        //nombre.parentNode.innerHTML = nombre.parentNode.innerHTML + "<p style='color:red'>La cantidad mínima de caracteres es de " + min + "</p>";
+        alert('La cantidad mínima de caracteres para el nombre de la materia es de : ' + min);
+        console.log(nombreString);
+        retorno = false;
+    }else{
+        nombre.style.borderColor = 'black';
+        retorno = true;
+    }
+
+    return retorno;
+    
 }
 
 function mostrarOcultarDiv(){
     var div = document.getElementById("divForm");
     div.style.display = (div.style.display == 'none') ? 'block' : 'none';
 }
+/*
+function mostrarSpinner(){
+    var contenedor = document.getElementById('contenedor_spinner');
+    contenedor.style.visibility = visible;
+    contenedor.style.opacity='0';
+}*/
 
 function levantarDatos(event) { 
     if(document.getElementById("divForm").style.display == 'none'){
@@ -133,58 +208,44 @@ function levantarDatos(event) {
     }
     var x = event.target.parentElement;
     
-    var x1 = x.firstChild;
-    var x2 = x1.nextSibling;
-    var x3 = x2.nextSibling;
-    var x4 = x3.nextSibling;
-    var x5 = x.lastChild;
+    var x1 = x.firstChild; //id
+    var x2 = x1.nextSibling; //nombre
+    var x3 = x2.nextSibling; //cuatri
+    var x4 = x3.nextSibling; //fecha
+    var x5 = x.lastChild; // turno
 
-    var x1txt = x1.innerHTML;// no muestro el ID
-    var x2txt = x2.innerHTML;
-    var x3txt = x3.innerHTML;
-    var x4txt = x4.innerHTML;
-    var x5txt = x5.innerHTML;
+    var x1txt = x1.innerHTML; //id txt
+    var x2txt = x2.innerHTML; //nombre txt
+    var x3txt = x3.innerHTML;//apellido txt
+    var x4txt = x4.innerHTML; //fecha
+    var x5txt = x5.innerHTML;//turno
 
+    var id = document.getElementById("id");
     var nombre = document.getElementById("nombre");
-    var apellido = document.getElementById("apellido");
+    var cuatrimestre = document.getElementById("cuatrimestre");
     var fecha = document.getElementById("fecha");
-    var sexo = document.getElementById("sexo");
+    var turnom = document.getElementById("turnom");
+    var turnon = document.getElementById("turnon");
 
+    var arrayFecha = x4txt.split("/", 3);
+    var dia = arrayFecha[0];
+    var mes = arrayFecha[1];
+    var ano = arrayFecha[2];
+    var mesdiaano = mes + "/"+dia+"/"+ano;
+    console.log(arrayFecha);
+    
+    id.value = x1txt;
     nombre.value = x2txt;
-    apellido.value = x3txt;
-    fecha.valueAsDate = new Date(x4txt);
-    sexo.value = x5txt;
-    if(x5txt=='Female'){
-        
+    cuatrimestre.value = x3txt;
+    fecha.valueAsDate = new Date(mesdiaano); // Me está levantando al revés el mes y el día
+    if(x5txt=='Mañana'){
+        turnom.checked = true;
+    }else{
+        turnon.checked = true;
     }
-
-    console.log(x3txt);
-/*
-    // BOTONES MODIFICAR Y ELIMINAR
-    var divBoton = document.getElementById('divBoton');
-
-    var btnModificar= document.createElement('button');
-    btnModificar.setAttribute('id','btnModificar');
-    var modif = 'Modificar';
-    btnModificar.append(modif);
-
-    var btnEliminar= document.createElement('button');
-    btnEliminar.setAttribute('id','btnEliminar');
-    var elim = 'Eliminar';
-    btnEliminar.append(elim);
-
-    var btnCancelar= document.createElement('button');
-    btnCancelar.setAttribute('id','btnCancelar');
-    var canc = 'Cancelar';
-    btnCancelar.append(canc);
-    
-    
-    divBoton.appendChild(btnModificar);
-    divBoton.appendChild(btnEliminar);
-    divBoton.appendChild(btnCancelar);
-    */
-    
+    miEvento = event.target;
   }
+
 
 // ************** AJAX ****************
 
@@ -197,44 +258,48 @@ function levantarDatos(event) {
     
     peticionHttp.onreadystatechange = callback;
     
-    peticionHttp.open("GET","http://localhost:3000/personas?id="+ datos.id +"&nombre="+datos.nombre+"&apellido="+ datos.apellido+"&fecha="+datos.fecha+"&sexo="+ datos.sexo, true);
+    peticionHttp.open("GET","http://localhost:3000/materias?id="+ datos.id +"&nombre="+datos.nombre+"&cuatrimestre="+ datos.cuatrimestre+"&fechaFinal="+datos.fecha+"&turno="+ datos.turno, true);
     peticionHttp.setRequestHeader("Content-type","application/json");// si es json "application/json
-    peticionHttp.send(JSON.stringify({"id:": datos.id, "nombre": datos.nombre , "apellido" : datos.apellido , 
-    "fecha" : datos.fecha , "sexo" : datos.sexo}));
-    
+    peticionHttp.send(JSON.stringify({"id:": datos.id, "nombre": datos.nombre , "cuatrimestre" : datos.cuatrimestre , 
+    "fechaFinal" : datos.fecha , "turno" : datos.turno}));
     function callback(){
         if(peticionHttp.readyState=== 4){
             if(peticionHttp.status === 200){
                var datos = JSON.parse(peticionHttp.response);
-               //console.log(datos[0].nombre);
+               //console.log(datos);
                cargarTablaJSON(datos);
             }
         }
     }
 }
 
-function ajaxEnviarJSON(datos){
+function ajaxEnviarJSON(datos, url){
 
-   //    var datos = {};
-   // console.log(datos.name + datos.pass);
     var peticionHttp = new XMLHttpRequest();
     
     peticionHttp.onreadystatechange = callback;
+    var fecha = new String(datos.fecha);
+    var arrayFecha = fecha.split("-", 3);
+    var dia = arrayFecha[2];
+    var mes = arrayFecha[1];
+    var ano = arrayFecha[0];
+    var mesdiaano = dia + "/"+mes+"/"+ano;
     
-    peticionHttp.open("POST","http://localhost:3000/nuevaPersona", true);
+    peticionHttp.open("POST",url, true);
     peticionHttp.setRequestHeader("Content-type","application/json");// si es json "application/json
-    peticionHttp.send(JSON.stringify({"nombre": datos.nombre , "apellido" : datos.apellido , 
-    "fecha" : datos.fecha , "telefono" : datos.telefono}));
-    //peticionHttp.send(JSON.stringify({"nombre" : "Florencia" , "apellido" : "Fiamingo" , "fecha" : "07/07/2020" , "telefono" : "111111"}));
-    
+    peticionHttp.send(JSON.stringify({"id": datos.id, "nombre": datos.nombre , "cuatrimestre" : datos.cuatrimestre , 
+    "fechaFinal" : mesdiaano, "turno": datos.turno}));
     function callback(){
         if(peticionHttp.readyState=== 4){
             if(peticionHttp.status === 200){
-                // alert(peticionHttp.responseText); MOSTRAR RESULTADO ENVIADOR POR SVR
-                //var datos = JSON.parse(peticionHttp.response);
                 console.log("ok");
-               // cargarTablaJSON(datos);
+                insertarNuevoDato(datos);
+                location.reload();
+                
             }
         }
     }
+
 }
+
+
