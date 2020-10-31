@@ -16,41 +16,57 @@
             <form action="" id="form">
                <!-- <label for="id">Id:</label><br>-->
                 <input type="text" name="id" id="id" readonly><br>
-                <label for="nombre">Nombre:</label><br>
-                <input type="text" name="nombre" id="nombre"><br>
-                <label for="cuatrimestre">Cuatrimestre:</label><br>
+                <label for="make">Marca:</label><br>
+                <input type="text" name="make" id="make"><br>
+                <label for="model">Modelo:</label><br>
+                <input type="text" name="model" id="model"><br>
+                <label for="year">Año:</label><br>
             <!-- <input type="text" name="cuatrimestre" id="cuatrimestre"><br>
                 -->
-                <select name="cuatrimestre" id="cuatrimestre" disabled>
-                    <option value="1">1</option>
-                    <option value="2">2</option>
-                    <option value="3">3</option>
-                    <option value="4">4</option>
-                </select><br>
-                <label for="fecha">Fecha Final:</label><br>
-                <input type="date" name="fecha" id="fecha"><br>
-                <label for="turno">Turno:</label><br>
-                <input type="radio" name="turno" id="turnom" value ='Mañana'checked>Mañana
-                <input type="radio" name="turno" id="turnon" value ='Noche'>Noche<br><br>
+                <select name="year" id="year" >
+                    <option value="2000">2000</option>
+                    <option value="2001">2001</option>
+                    <option value="2002">2002</option>
+                    <option value="2003">2003</option>
+                    <option value="2004">2004</option>
+                    <option value="2005">2005</option>
+                    <option value="2006">2006</option>
+                    <option value="2007">2007</option>
+                    <option value="2008">2008</option>
+                    <option value="2009">2009</option>
+                    <option value="2010">2010</option>
+                    <option value="2011">2011</option>
+                    <option value="2012">2012</option>
+                    <option value="2013">2013</option>
+                    <option value="2014">2014</option>
+                    <option value="2015">2015</option>
+                    <option value="2016">2016</option>
+                    <option value="2017">2017</option>
+                    <option value="2018">2018</option>
+                    <option value="2019">2019</option>
+                    <option value="2020" selected>2020</option>
+                </select><br><br>
 
                 <div id="divBoton">
-                <!-- <button type="button" id="btn">Insertar</button>-->
-                    <button type="button" id="btnEliminar">Eliminar</button>
-                    <button type="button" id="btnModificar">Modificar</button>
+                   <button type="button" id="btn">Guardar</button>
+               <!-- <button type="button" id="btnEliminar">Eliminar</button>
+                    <button type="button" id="btnModificar">Modificar</button>-->
+                    <button type="button" id="btnCancelar">Cerrar</button>
                 </div>
             </form>
         </div>
         <br>
         <div id="divBtnMas">
-            <button id="btnMas">+</button>
+            <button id="btnMas">+</button> <br>
         </div>
+    
         <br>
         <h2>Lista de Personas</h2>
         <div id="divTabla">
             <table id="tabla">
                 <thead id ="cabecera">
                 </thead>
-                <tbody id='tbody'ondblclick ="levantarDatos(event)">
+                <tbody id='tbody'>
                 </tbody>
             </table>
         </div>

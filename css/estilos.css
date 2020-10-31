@@ -15,14 +15,26 @@ th, td{
 #id{
     visibility: hidden;
 }
-
 #divForm{
-    width: 50%;
-    padding: 1%;
+    top: 15%;
+    width: 40%;
+    height: 40%;
+    left: 30%;
     border-radius: 10px;
     background-color: rgb(212, 209, 209);
+    position: fixed;
 }
-
+#form{
+    height: 100%;
+    width: 100%;
+    border-radius: 100%;
+    position: absolute;
+    top: 1%;
+    left: 12%;
+    right: 1%;
+    bottom: 1%;
+    margin: auto;
+}
 #btn, #btnModificar, #btnEliminar, #btnCancelar {
     padding-left: 5%;
     padding-right: 5%;
@@ -31,6 +43,12 @@ th, td{
     border-radius: 10px;
     background-color: green;
     color: white;
+}
+#btnCancelar{
+    background-color:red;
+}
+#btn{
+    background-color: blue;
 }
 #btnEliminar {
     padding-left: 5%;
@@ -113,4 +131,6 @@ input{
     from{transform: rotate(0deg);}
     to{transform: rotate(360deg);}
 }
+
+
 
